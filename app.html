@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Your Fitness Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #4cc9f0;
+            --accent: #f72585;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f43f5e;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-brand i {
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            padding: 0.5rem 1.25rem !important;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .nav-link i {
+            margin-right: 0.5rem;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .page-header h2 {
+            font-weight: 700;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+        
+        .page-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            right: 25%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 1rem 1rem 0 0 !important;
+            padding: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header h2 i {
+            margin-right: 0.75rem;
+        }
+        
+        .card-body {
+            padding: 1.75rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 0.75rem;
+            padding: 0.625rem 1rem;
+            border: 1px solid var(--gray-200);
+            box-shadow: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+        
+        .input-group .form-control {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .input-group .form-select {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        
+        .btn {
+            border-radius: 0.75rem;
+            padding: 0.625rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            border: none;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            border: none;
+            color: white;
+        }
+        
+        .btn-accent:hover {
+            background-color: #e01e79;
+            color: white;
+        }
+        
+        .btn-category {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: var(--gray-100);
+            color: var(--dark);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .btn-category.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .btn i {
+            margin-right: 0.5rem;
+        }
+        
+        #results {
+            background-color: var(--gray-100);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        #results.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .result-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .progress {
+            height: 1rem;
+            border-radius: 1rem;
+            background-color: var(--gray-200);
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 1s ease;
+        }
+        
+        .completed-day {
+            border-left: 4px solid var(--success);
+            background-color: rgba(74, 222, 128, 0.05);
+        }
+        
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .badge-underweight {
+            background-color: var(--warning);
+            color: #7c2d12;
+        }
+        
+        .badge-normal {
+            background-color: var(--success);
+            color: #14532d;
+        }
+        
+        .badge-overweight {
+            background-color: var(--warning);
+            color: #7c2d12;
+        }
+        
+        .badge-obese {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .meal-card {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .meal-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .meal-card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+        }
+        
+        .meal-card-body {
+            padding: 1rem;
+        }
+        
+        .meal-card-footer {
+            background-color: var(--gray-100);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .meal-nutrition {
+            display: flex;
+            margin-top: 0.5rem;
+        }
+        
+        .meal-nutrition span {
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .meal-nutrition span i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .workout-day-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .workout-day-header {
+            padding: 1rem;
+            background-color: var(--gray-100);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .workout-day-body {
+            padding: 1.25rem;
+        }
+        
+        .workout-exercise {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            background-color: var(--gray-100);
+        }
+        
+        .workout-select {
+            height: auto !important;
+            min-height: 120px;
+        }
+        
+        .table {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table thead th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+            border: none;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        footer a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: white;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            margin: 0 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fadeIn {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1.25rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-heartbeat"></i>FitTrack</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#calculator" id="calculator-nav"><i class="fas fa-calculator"></i>Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#diet" id="diet-nav"><i class="fas fa-utensils"></i>Diet Plan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tracker" id="tracker-nav"><i class="fas fa-dumbbell"></i>Workout Tracker</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <!-- Calculator Section -->
+        <section id="calculator-section">
+            <div class="page-header">
+                <h2>Fitness Calculator</h2>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-calculator"></i> Calculate Your Metrics</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead text-center mb-4">Get personalized fitness metrics based on your body and goals</p>
+                            
+                            <form id="calculator-form">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="weight" class="form-label">Weight</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="weight" name="weight" placeholder="Enter weight" required>
+                                            <select class="form-select" id="weight-unit" name="weight_unit">
+                                                <option value="kg">kg</option>
+                                                <option value="lbs">lbs</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="height" class="form-label">Height</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="height" name="height" placeholder="Enter height" required>
+                                            <select class="form-select" id="height-unit" name="height_unit">
+                                                <option value="cm">cm</option>
+                                                <option value="in">in</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="age" class="form-label">Age</label>
+                                        <input type="number" class="form-control" id="age" name="age" placeholder="Enter age" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select class="form-select" id="gender" name="gender" required>
+                                            <option value="">Select gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <label for="activity" class="form-label">Activity Level</label>
+                                        <select class="form-select" id="activity" name="activity" required>
+                                            <option value="">Select activity level</option>
+                                            <option value="1.2">Sedentary (little or no exercise)</option>
+                                            <option value="1.375">Lightly active (1-3 days/week)</option>
+                                            <option value="1.55">Moderately active (3-5 days/week)</option>
+                                            <option value="1.725">Very active (6-7 days/week)</option>
+                                            <option value="1.9">Extra active (very hard exercise & physical job)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="goal" class="form-label">Fitness Goal</label>
+                                        <select class="form-select" id="goal" name="goal" required>
+                                            <option value="">Select goal</option>
+                                            <option value="lose">Lose weight</option>
+                                            <option value="maintain">Maintain weight</option>
+                                            <option value="gain">Gain weight/muscle</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-calculator"></i> Calculate My Metrics</button>
+                                </div>
+                            </form>
+                            
+                            <div id="results" class="mt-5">
+                                <h3 class="text-center mb-4">Your Personalized Results</h3>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="result-card">
+                                            <h5><i class="fas fa-weight"></i> Body Mass Index (BMI)</h5>
+                                            <div class="result-value" id="bmi-result">0.0</div>
+                                            <span id="bmi-category" class="badge"></span>
+                                            <div class="mt-2 text-muted small">BMI estimates body fat and categorizes weight status</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="result-card">
+                                            <h5><i class="fas fa-fire-alt"></i> Basal Metabolic Rate (BMR)</h5>
+                                            <div class="result-value"><span id="bmr-result">0</span> <span class="fs-6">calories/day</span></div>
+                                            <div class="mt-2 text-muted small">Calories your body needs at complete rest</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="result-card">
+                                            <h5><i class="fas fa-utensils"></i> Daily Calorie Needs</h5>
+                                            <div class="result-value"><span id="calorie-result">0</span> <span class="fs-6">calories/day</span></div>
+                                            <div class="mt-2 text-muted small">Daily calories needed to reach your goal</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="result-card">
+                                            <h5><i class="fas fa-drumstick-bite"></i> Daily Protein Needs</h5>
+                                            <div class="result-value"><span id="protein-result">0</span> <span class="fs-6">g/day</span></div>
+                                            <div class="mt-2 text-muted small">Protein needed for muscle maintenance and growth</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button class="btn btn-accent" onclick="document.getElementById('diet-nav').click()">
+                                        <i class="fas fa-utensils"></i> Get Your Diet Plan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diet Plan Section -->
+        <section id="diet-section" style="display: none;">
+            <div class="page-header">
+                <h2>Personalized Diet Plan</h2>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-utensils"></i> Meal Recommendations</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead text-center mb-4">Get meal recommendations based on your calorie and protein needs</p>
+                            
+                            <div class="text-center mb-4">
+                                <h5 class="mb-3">Choose your diet preference</h5>
+                                <button class="btn btn-category" onclick="loadMeals('veg')"><i class="fas fa-leaf"></i> Vegetarian</button>
+                                <button class="btn btn-category" onclick="loadMeals('non-veg')"><i class="fas fa-drumstick-bite"></i> Non-Vegetarian</button>
+                                <button class="btn btn-category" onclick="loadMeals('mixed')"><i class="fas fa-utensils"></i> Mixed</button>
+                            </div>
+                            
+                            <div id="diet-results" class="mt-4" style="display: none;">
+                                <h3 class="text-center mb-4">Your Personalized Meal Plan</h3>
+                                <div class="row" id="meal-cards-container">
+                                    <!-- Meal cards will be inserted here -->
+                                </div>
+                                <div class="p-3 mt-4 bg-light rounded-3 text-center">
+                                    <h5>Daily Nutrition Totals</h5>
+                                    <div class="d-flex justify-content-center mt-3">
+                                        <div class="px-4">
+                                            <i class="fas fa-fire-alt text-danger me-2"></i>
+                                            <span id="total-calories">0</span> calories
+                                        </div>
+                                        <div class="px-4">
+                                            <i class="fas fa-drumstick-bite text-primary me-2"></i>
+                                            <span id="total-protein">0</span>g protein
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Workout Tracker Section -->
+        <section id="tracker-section" style="display: none;">
+            <div class="page-header">
+                <h2>Workout Tracker</h2>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-dumbbell"></i> Weekly Workout Tracker</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead text-center mb-4">Track your workouts and monitor your weekly progress</p>
+                            
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h5>Weekly Progress</h5>
+                                    <span id="workout-counter" class="badge bg-primary">0/7</span>
+                                </div>
+                                <div class="progress">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4 align-items-center">
+                                <div class="col-md-5">
+                                    <label for="body-part" class="form-label">Generate a workout for:</label>
+                                    <select class="form-select" id="body-part">
+                                        <option value="chest">Chest</option>
+                                        <option value="back">Back</option>
+                                        <option value="legs">Legs</option>
+                                        <option value="bicep">Bicep</option>
+                                        <option value="tricep">Tricep</option>
+                                        <option value="abs">Abs</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-md-4">
+                                    <button class="btn btn-primary w-100" onclick="generateWorkout()">
+                                        <i class="fas fa-plus-circle"></i> Generate Workout
+                                    </button>
+                                </div>
+                                <div class="col-md-4 mt-3 mt-md-4">
+                                    <button id="save-workouts" class="btn btn-accent w-100">
+                                        <i class="fas fa-save"></i> Save All Workouts
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th width="15%">Day</th>
+                                            <th width="70%">Workout Focus</th>
+                                            <th width="15%" class="text-center">Completed</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="workout-table-body">
+                                        <!-- Workout data will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <h4><i class="fas fa-heartbeat"></i> FitTrack</h4>
+                    <p>Your personal fitness companion for health and wellness.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-links mb-3">
+                        <a href="#">Home</a>
+                        <a href="#">About</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Privacy</a>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <p>&copy; 2025 FitTrack. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
